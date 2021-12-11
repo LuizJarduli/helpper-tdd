@@ -1,5 +1,5 @@
 export class OutOfStockError extends Error {
   constructor (sku: string) {
-    super(`Out of stock: ${sku}.`)
+    super(`Out Of Stock: ${sku}.`)
   }
 }
