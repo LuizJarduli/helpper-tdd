@@ -8,11 +8,11 @@ describe('Allocation', () => {
   it('should prefer current stock batches to shipments', () => {
     const tomorrow: Date = new Date()
     tomorrow.setDate(new Date().getDate() + 1)
-    const clock = 'RETRO-CLOCK'
+    const clock: string = 'RETRO-CLOCK'
 
-    const inStockBatch = new Batch('in-stock-batch', clock, 100)
-    const shipmentBatch = new Batch('shipment-batch', clock, 100, tomorrow)
-    const line = new OrderLine('oref', clock, 10)
+    const inStockBatch: Batch = new Batch('in-stock-batch', clock, 100)
+    const shipmentBatch: Batch = new Batch('shipment-batch', clock, 100, tomorrow)
+    const line: OrderLine = new OrderLine('oref', clock, 10)
 
     allocate(line, [shipmentBatch, inStockBatch])
 
@@ -21,18 +21,18 @@ describe('Allocation', () => {
   })
 
   it('should prefer earlier batches', () => {
-    const spoon = 'MINIMALIST_SPOON'
-    const today = new Date()
+    const spoon: string = 'MINIMALIST_SPOON'
+    const today: Date = new Date()
     const tomorrow: Date = new Date()
     tomorrow.setDate(new Date().getDate() + 1)
-    const later = new Date()
+    const later: Date = new Date()
     later.setDate(new Date().getDate() + 10)
 
-    const earliest = new Batch('speedy-batch', spoon, 100, today)
-    const medium = new Batch('normal-batch', spoon, 100, tomorrow)
-    const latest = new Batch('slow-batch', spoon, 100, later)
+    const earliest: Batch = new Batch('speedy-batch', spoon, 100, today)
+    const medium: Batch = new Batch('normal-batch', spoon, 100, tomorrow)
+    const latest: Batch = new Batch('slow-batch', spoon, 100, later)
 
-    const line = new OrderLine('order1', spoon, 10)
+    const line: OrderLine = new OrderLine('order1', spoon, 10)
 
     allocate(line, [earliest, medium, latest])
 
@@ -42,38 +42,38 @@ describe('Allocation', () => {
   })
 
   it('should return allocated batch reference', () => {
-    const poster = 'HIGHBROW-POSTER'
+    const poster: string = 'HIGHBROW-POSTER'
     const tomorrow: Date = new Date()
     tomorrow.setDate(new Date().getDate() + 1)
-    const inStockBatch = new Batch('in-stock-batch', poster, 100)
-    const shipmentBatch = new Batch('shipment-batch', poster, 100, tomorrow)
-    const line = new OrderLine('oref', poster, 10)
+    const inStockBatch: Batch = new Batch('in-stock-batch', poster, 100)
+    const shipmentBatch: Batch = new Batch('shipment-batch', poster, 100, tomorrow)
+    const line: OrderLine = new OrderLine('oref', poster, 10)
 
-    const reference = allocate(line, [inStockBatch, shipmentBatch]).value as string
+    const reference: string = allocate(line, [inStockBatch, shipmentBatch]).value as string
     expect(reference).toEqual(inStockBatch.reference)
   })
 
   it('should handle empty, undefined and null batch arrays', () => {
-    const line = new OrderLine('oref', 'HIGBROW-POSTER', 10)
-    const error1 = allocate(line, []).value as Error
+    const line: OrderLine = new OrderLine('oref', 'HIGBROW-POSTER', 10)
+    const error1: Error = allocate(line, []).value as Error
     expect(error1).toBeInstanceOf(InvalidBatchArrayError)
 
-    const error2 = allocate(line, undefined).value as Error
+    const error2: Error = allocate(line, undefined).value as Error
     expect(error2).toBeInstanceOf(InvalidBatchArrayError)
 
-    const error3 = allocate(line, null).value as Error
+    const error3: Error = allocate(line, null).value as Error
     expect(error3).toBeInstanceOf(InvalidBatchArrayError)
   })
 
   it('should return out of stock error if cannot allocate', () => {
-    const fork = 'SMALL-FORK'
-    const batch = new Batch('batch1', fork, 10, new Date())
-    const tenForksLine = new OrderLine('order1', fork, 10)
-    const oneForkLine = new OrderLine('order2', fork, 1)
+    const fork: string = 'SMALL-FORK'
+    const batch: Batch = new Batch('batch1', fork, 10, new Date())
+    const tenForksLine: OrderLine = new OrderLine('order1', fork, 10)
+    const oneForkLine: OrderLine = new OrderLine('order2', fork, 1)
 
     allocate(tenForksLine, [batch])
-    const error = allocate(oneForkLine, [batch]).value as Error
+    const error: Error = allocate(oneForkLine, [batch]).value as Error
     expect(error).toBeInstanceOf(OutOfStockError)
-    expect(error.message).toEqual('Out of stock: ' + fork + '.')
+    expect(error.message).toEqual(`Out Of Stock: ${fork}.`)
   })
 })

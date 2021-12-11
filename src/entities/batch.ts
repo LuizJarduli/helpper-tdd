@@ -42,9 +42,9 @@ export class Batch {
   }
 
   deallocate (line: OrderLine): void {
-    const found = this.findAllocated(line)
+    const found: OrderLine = this.findAllocated(line)
     if (found !== undefined) {
-      const index = this.allocations.indexOf(found)
+      const index: number = this.allocations.indexOf(found)
       this.allocations.splice(index)
     }
   }

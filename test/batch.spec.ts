@@ -3,8 +3,8 @@ import { OrderLine } from '../src/entities/order-line'
 
 describe('Batch', () => {
   it('should reduce available quantity when allocated to an order line', () => {
-    const batch = new Batch('batch-001', 'SMALL-TABLE', 20, new Date())
-    const line = new OrderLine('order-ref', 'SMALL-TABLE', 2)
+    const batch: Batch = new Batch('batch-001', 'SMALL-TABLE', 20, new Date())
+    const line: OrderLine = new OrderLine('order-ref', 'SMALL-TABLE', 2)
     batch.allocate(line)
     expect(batch.availableQuantity).toEqual(18)
   })
@@ -25,8 +25,8 @@ describe('Batch', () => {
   })
 
   it('should not be able to allocate if skus do not match', () => {
-    const batch = new Batch('batch-001', 'UNCOMFORTABLE-CHAIR', 100, undefined)
-    const lineWithDifferentSku = new OrderLine('order-123', 'EXPENSIVE-TOASTER', 10)
+    const batch: Batch = new Batch('batch-001', 'UNCOMFORTABLE-CHAIR', 100, undefined)
+    const lineWithDifferentSku: OrderLine = new OrderLine('order-123', 'EXPENSIVE-TOASTER', 10)
     expect(batch.canAllocate(lineWithDifferentSku)).toBeFalsy()
   })
 
@@ -37,22 +37,22 @@ describe('Batch', () => {
   })
 
   it('should be able to create batch without an ETA', () => {
-    const batch = new Batch('batch-001', 'UNCOMFORTABLE-CHAIR', 100)
+    const batch: Batch = new Batch('batch-001', 'UNCOMFORTABLE-CHAIR', 100)
     expect(batch.eta).toBeUndefined()
   })
 
   it('should be able to deallocate allocated line', () => {
     const { batch, line } = makeBatchAndLineWithSameSku('DECORATIVE-TRINKET', 20, 2)
-    const lineClone = new OrderLine('order-123', 'DECORATIVE-TRINKET', 2)
+    const lineClone: OrderLine = new OrderLine('order-123', 'DECORATIVE-TRINKET', 2)
     batch.allocate(line)
     batch.deallocate(lineClone)
     expect(batch.availableQuantity).toEqual(20)
   })
 
   it('should not be able to allocate same line twice', () => {
-    const batch = new Batch('batch-001', 'EXPENSIVE-TOASTER', 100)
-    const line = new OrderLine('order-123', 'EXPENSIVE-TOASTER', 10)
-    const lineClone = new OrderLine('order-123', 'EXPENSIVE-TOASTER', 10)
+    const batch: Batch = new Batch('batch-001', 'EXPENSIVE-TOASTER', 100)
+    const line: OrderLine = new OrderLine('order-123', 'EXPENSIVE-TOASTER', 10)
+    const lineClone: OrderLine = new OrderLine('order-123', 'EXPENSIVE-TOASTER', 10)
     batch.allocate(line)
     batch.allocate(lineClone)
     expect(batch.availableQuantity).toEqual(90)

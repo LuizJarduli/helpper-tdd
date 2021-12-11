@@ -8,12 +8,12 @@ export function allocate (line: OrderLine, batches: Batch[]):
 Either<OutOfStockError | InvalidBatchArrayError, string> {
   if (empty(batches)) return left(new InvalidBatchArrayError())
 
-  const allocatableBatches = batches.filter(batch => batch.canAllocate(line))
-  const batchesSortedByEta = allocatableBatches.sort(compareBatchesByEta)
+  const allocatableBatches: Batch[] = batches.filter(batch => batch.canAllocate(line))
+  const batchesSortedByEta: Batch[] = allocatableBatches.sort(compareBatchesByEta)
 
   if (empty(batchesSortedByEta)) return left(new OutOfStockError(line.sku))
 
-  const selectedBatch = batchesSortedByEta[0]
+  const selectedBatch: Batch = batchesSortedByEta[0]
   selectedBatch.allocate(line)
   return right(selectedBatch.reference)
 }
